@@ -1,0 +1,136 @@
+---
+title: "Lab 01 Exploring Data by- Sachin Mohan Sujir"
+output:
+  html_document:
+    df_print: paged
+---
+
+# (a) 
+
+Reading csv file
+
+```{r a}
+rm(list=ls())
+College=read.csv("College.csv",na.strings="?",header = T)
+```
+
+# (b) 
+
+Viewing Data and Selecting first column
+
+```{r b}
+fix(College)
+rownames(College) = College[,1]
+fix(College)
+```
+
+
+Eliminating the first column
+
+```{r b1}
+College = College[,-1]
+fix(College)
+```
+
+# (c)
+
+(i)Summary Function
+
+```{r c}
+summary(College)
+```
+
+(ii) Using pair to display scatter plot for first 10 columns
+
+```{r c1}
+pairs(College[,1:10])
+```
+
+(iii) plot() function to produce side-by-side boxplots of Outstate versus
+Private
+
+```{r c2}
+College$Private = as.factor(College$Private)
+plot(College$Private,College$Outstate,xlab="Private",ylab= "Outstate",main="Boxplot: Outstate vs Private")
+```
+
+(iv) Create a new qualitative variable, called Elite, by binning the Top10perc variable, divide universities into two groups based on whether or
+not the proportion of students coming from the top 10% of their high school
+classes exceeds 50%.
+
+```{r c3}
+Elite = rep("No",nrow(College))
+Elite[College$Top10perc > 50] = "Yes"
+Elite = as.factor(Elite)
+College = data.frame(College,Elite)
+summary(College)
+
+```
+
+Elite Universities: 78
+
+Box Plot Outsource vs Elite
+
+```{r c4}
+College$Elite = as.factor(College$Elite)
+plot(College$Elite,College$Outstate,xlab="Elite",ylab= "Outstate",main="Boxplot: Outstate vs Elite")
+```
+
+(v)Histogram for different variables
+
+```{r c5}
+par(mfrow=c(2,2))
+hist(College$Enroll,col="Red")
+hist(College$Accept,col="Green")
+hist(College$Apps,col="Yellow")
+hist(College$PhD,col="Blue")
+```
+
+# (d)
+(i) Which of the predictors are quantitative, and which are qualitative?
+
+```{r}
+sapply(College,class)
+dim(College)
+```
+
+From the above snippet we can see that Private and Elite are the only Qualitative Variables(Factor). Rest of the Variables are Quantitative(numberic). So, 2 Qualitative and 17 Quantitative Variables.
+
+(ii) Range, Mean, Standard Deviation of Enroll
+
+```{r}
+rangeEnroll=range(College$Enroll)
+meanEnroll=mean(College$Enroll)
+sdEnroll=sd(College$Enroll)
+"Range of Enroll: " 
+rangeEnroll
+
+"Mean of Enroll :"
+meanEnroll
+
+"Standard Deviation of Enroll: "
+sdEnroll
+```
+
+(iii) Removing 100th through 200th observations and finding range, sd and mean of Enroll
+
+```{r}
+newenroll = College$Enroll[c(-100,-200)]
+rangeEnroll_1=range(newenroll)
+meanEnroll_1=mean(newenroll)
+sdEnroll_1=sd(newenroll)
+"Range of Enroll: " 
+rangeEnroll_1
+
+"Mean of Enroll :"
+meanEnroll_1
+
+"Standard Deviation of Enroll: "
+sdEnroll_1
+
+```
+
+Comparing the range, mean and sd of new enroll with original enroll in college.csv, we see that they remain unchanged.
+
+
+
